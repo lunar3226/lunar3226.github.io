@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>马来西亚COVID-19流行病监测分析系统</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Times New Roman', 'SimSun', 'Microsoft YaHei', Arial, sans-serif;
+            background: #fafafa;
+            color: #333333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 50px;
+            background: #ffffff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 2px solid #2c3e50;
+            padding-bottom: 20px;
+        }
+
+        header h1 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        header .subtitle {
+            font-size: 14px;
+            color: #555555;
+        }
+
+        header .meta {
+            font-size: 12px;
+            color: #777777;
+            margin-top: 10px;
+        }
+
+        .section {
+            margin-bottom: 50px;
+            page-break-inside: avoid;
+        }
+
+        .section h2 {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #34495e;
+            color: #2c3e50;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 1px solid #dee2e6;
+            padding: 20px;
+            text-align: center;
+            border-radius: 4px;
+        }
+
+        .stat-card .value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .stat-card .label {
+            font-size: 13px;
+            color: #495057;
+        }
+
+        .chart-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .chart-box {
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            padding: 20px;
+            border-radius: 4px;
+        }
+
+        .chart-box h3 {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        .chart-container {
+            height: 280px;
+            position: relative;
+        }
+
+        .chart-container-large {
+            height: 320px;
+        }
+
+        .chart-full {
+            grid-column: 1 / -1;
+        }
+
+        .analysis-box {
+            background: linear-gradient(135deg, #e8f4f8 0%, #d1ecf1 100%);
+            border-left: 4px solid #17a2b8;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .analysis-box h4 {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .analysis-box ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .analysis-box li {
+            font-size: 13px;
+            color: #343a40;
+            margin-bottom: 8px;
+            line-height: 1.6;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .analysis-box li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: #17a2b8;
+            font-weight: bold;
+        }
+
+        .table-container {
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        table th {
+            background: #f0f0f0;
+            font-weight: bold;
+        }
+
+        table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            font-size: 12px;
+            color: #666;
+        }
+
+        @media print {
+            body { background: #fff; }
+            .section { page-break-inside: avoid; }
+            .chart-container { height: 250px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>马来西亚COVID-19流行病监测分析系统</h1>
+            <div class="subtitle">Malaysia COVID-19 Epidemic Monitoring and Analysis System</div>
+            <div class="meta">数据来源：马来西亚官方COVID-19公开数据集 | 分析周期：2021年1月 - 2025年6月</div>
+        </header>
+
+        <!-- 数据概览 -->
+        <div class="section">
+            <h2>一、数据概览</h2>
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <div class="value">5,233,643</div>
+                    <div class="label">累计确诊病例</div>
+                </div>
+                <div class="stat-card">
+                    <div class="value">36,880</div>
+                    <div class="label">累计死亡病例</div>
+                </div>
+                <div class="stat-card">
+                    <div class="value">0.70%</div>
+                    <div class="label">病死率</div>
+                </div>
+                <div class="stat-card">
+                    <div class="value">68,639,122</div>
+                    <div class="label">累计检测量</div>
+                </div>
+                <div class="stat-card">
+                    <div class="value">72,657,712</div>
+                    <div class="label">疫苗接种总量</div>
+                </div>
+                <div class="stat-card">
+                    <div class="value">98.54%</div>
+                    <div class="label">疫苗接种率</div>
+                </div>
+            </div>
+            <div class="analysis-box">
+                <h4>数据分析概要</h4>
+                <ul>
+                    <li>本分析基于马来西亚官方COVID-19公开数据集，覆盖2021年1月至2025年6月共1,461天的疫情数据</li>
+                    <li>累计确诊病例5,233,643例，累计死亡36,880例，病死率维持在0.70%的较低水平</li>
+                    <li>累计检测量达68,639,122次，疫苗接种总量72,657,712剂次，接种率达98.54%</li>
+                    <li>数据表明马来西亚在疫情防控和疫苗接种方面取得显著成效，疫情态势趋于平稳</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 疫情趋势分析 -->
+        <div class="section">
+            <h2>二、疫情趋势分析</h2>
+            <div class="chart-row">
+                <div class="chart-box">
+                    <h3>图1：COVID-19新增病例与新增死亡季度趋势（2021-2025年）</h3>
+                    <div class="chart-container">
+                        <canvas id="trendChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-box">
+                    <h3>图2：COVID-19累计病例与累计死亡趋势</h3>
+                    <div class="chart-container">
+                        <canvas id="cumulativeChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="analysis-box">
+                <h4>疫情趋势分析结论</h4>
+                <ul>
+                    <li>新增病例与新增死亡呈现明显的正相关关系，死亡病例峰值滞后于确诊病例峰值约1-2周</li>
+                    <li>疫情在2021年第三季度达到峰值（1,493,716例），随后逐步下降并维持在较低水平</li>
+                    <li>2022年后疫情进入平稳期，2023-2025年新增病例维持在较低水平</li>
+                    <li>累计确诊病例达523万例，累计死亡3.7万例，病死率保持在0.7%的国际较低水平</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 疫苗接种分析 -->
+        <div class="section">
+            <h2>三、疫苗接种分析</h2>
+            <div class="chart-row">
+                <div class="chart-box chart-full">
+                    <h3>图3：疫苗接种率与新增病例对比分析</h3>
+                    <div class="chart-container-large">
+                        <canvas id="vaxCasesChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="chart-row">
+                <div class="chart-box chart-full">
+                    <h3>图4：疫苗接种季度分布趋势</h3>
+                    <div class="chart-container">
+                        <canvas id="vaxTrendChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="analysis-box">
+                <h4>疫苗接种分析结论</h4>
+                <ul>
+                    <li>随着疫苗接种率的提高，新增病例呈现明显下降趋势，两者呈现显著负相关</li>
+                    <li>2021年第三季度为疫苗接种高峰期，接种量达3,667万剂次，随后逐步下降</li>
+                    <li>18-29岁年龄段接种量最高（1,817万剂次），80岁以上年龄段接种量最低（90万剂次）</li>
+                    <li>疫苗接种对控制疫情传播起到关键作用，接种率达到98.54%后疫情得到有效控制</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 医疗系统压力 -->
+        <div class="section">
+            <h2>四、医疗系统压力分析</h2>
+            <div class="chart-row">
+                <div class="chart-box chart-full">
+                    <h3>图5：年度医疗资源利用情况（2021-2025年）</h3>
+                    <div class="chart-container-large">
+                        <canvas id="healthcareChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="chart-row">
+                <div class="chart-box chart-full">
+                    <h3>图6：各州医疗资源使用统计（前10州）</h3>
+                    <div class="chart-container">
+                        <canvas id="healthcareBarChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="analysis-box">
+                <h4>医疗系统压力分析结论</h4>
+                <ul>
+                    <li>雪兰莪州医疗资源使用量最高（174万次），其次为砂拉越州（110万次）和柔佛州（87万次）</li>
+                    <li>疫情高峰期（2021年）医疗资源压力较大，PKRC（低风险隔离中心）使用量达450万次</li>
+                    <li>医院床位使用量从2021年的218万次下降至2025年的2,741次，下降幅度达99.87%</li>
+                    <li>ICU资源在疫情峰值时压力最大（2021年26万次），2025年降至45次，缓解显著</li>
+                    <li>医疗资源利用率逐年下降，表明疫情对医疗系统的压力已基本缓解</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 年龄分布分析 -->
+        <div class="section">
+            <h2>五、年龄分布分析</h2>
+            <div class="chart-row">
+                <div class="chart-box chart-full">
+                    <h3>图7：各年龄段疫苗接种覆盖情况</h3>
+                    <div class="chart-container-large">
+                        <canvas id="ageBarChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="chart-row">
+                <div class="chart-box">
+                    <h3>图8：各年龄段接种比例分布</h3>
+                    <div class="chart-container">
+                        <canvas id="agePieChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-box">
+                    <h3>图9：加强针接种年龄分布</h3>
+                    <div class="chart-container">
+                        <canvas id="boosterChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="analysis-box">
+                <h4>年龄分布分析结论</h4>
+                <ul>
+                    <li>18-29岁年龄段接种总量最高（1,817万剂次），占总接种量的25%；80岁以上最低（90万剂次），占1.2%</li>
+                    <li>完全接种率在各年龄段均保持较高水平，5-11岁儿童完全接种率为46.5%</li>
+                    <li>加强针接种在成年人中较为普遍，但在青少年群体（12-17岁）覆盖率较低（仅1.0%）</li>
+                    <li>第二剂加强针接种主要集中在50岁以上高风险人群，年轻人群体接种率较低</li>
+                    <li>建议继续推进青少年和儿童的疫苗接种工作，特别是加强针的接种覆盖率</li>
+                </ul>
+            </div>
+        </div>
+
+        <footer>
+            <p>马来西亚COVID-19流行病监测分析系统 V1.0 | 数据覆盖周期：2021年1月 - 2025年6月</p>
+            <p style="margin-top: 5px;">© 2025 版权所有</p>
+        </footer>
+    </div>
+
+    <script>
+        const analysisData = {
+            quarters: ['2021Q1', '2021Q2', '2021Q3', '2021Q4', '2022Q1', '2022Q2', '2022Q3', '2022Q4',
+                       '2023Q1', '2023Q2', '2023Q3', '2023Q4', '2024Q1', '2024Q2', '2024Q3', '2024Q4',
+                       '2025Q1', '2025Q2'],
+            cases: [232490, 406479, 1493716, 512391, 1443833, 364136, 274824, 185798,
+                    25061, 64356, 10589, 102956, 48802, 20400, 16269, 15195, 7451, 8897],
+            deaths: [801, 3898, 21162, 5155, 3496, 782, 609, 479, 130, 167, 27, 117, 54, 3, 0, 0, 0, 0],
+            vaccinations: [707542, 7600426, 36672470, 12868873, 11207028, 2400390, 704949, 195698,
+                           242201, 30794, 9329, 7330, 7205, 2081, 1356, 36, 4, 0],
+            healthcare: {
+                years: ['2021', '2022', '2023', '2024', '2025'],
+                pkrc: [4502858, 331201, 0, 0, 0],
+                hospital: [2180246, 670921, 91056, 30489, 2741],
+                icu: [263646, 41070, 4845, 1413, 45]
+            },
+            states: ['Selangor', 'Sarawak', 'Johor', 'Sabah', 'Pahang', 'Kelantan', 'Perak', 'Terengganu', 'Penang', 'Negeri Sembilan'],
+            stateTotals: [1736819, 1095242, 868347, 821213, 618966, 587447, 371330, 353107, 336876, 328506],
+            ageGroups: ['5-11', '12-17', '18-29', '30-39', '40-49', '50-59', '60-69', '70-79', '80+'],
+            ageTotals: [3308925, 5787400, 18165665, 14681119, 11147756, 8568917, 6140560, 2798307, 900644],
+            ageStats: {
+                partial: [1765646, 2900778, 6835127, 5405400, 4042984, 3087292, 2177057, 992308, 328730],
+                full: [1536039, 2826700, 6771434, 5356414, 4010318, 3065543, 2163938, 985770, 324664],
+                booster: [7207, 59454, 4417126, 3737586, 2955207, 2293917, 1669188, 747259, 224650],
+                booster2: [33, 468, 141978, 181719, 139247, 122165, 130377, 72970, 22600]
+            }
+        };
+
+        const charts = {};
+
+        function initAllCharts() {
+            initTrendCharts();
+            initVaccinationCharts();
+            initHealthcareCharts();
+            initAgeCharts();
+        }
+
+        function initTrendCharts() {
+            const trendCtx = document.getElementById('trendChart').getContext('2d');
+            charts.trend = new Chart(trendCtx, {
+                type: 'line',
+                data: {
+                    labels: analysisData.quarters,
+                    datasets: [
+                        {
+                            label: '新增病例',
+                            data: analysisData.cases,
+                            borderColor: '#2c3e50',
+                            backgroundColor: 'rgba(44, 62, 80, 0.1)',
+                            fill: true,
+                            tension: 0.3,
+                            borderWidth: 2
+                        },
+                        {
+                            label: '新增死亡',
+                            data: analysisData.deaths,
+                            borderColor: '#e74c3c',
+                            backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                            fill: true,
+                            tension: 0.3,
+                            borderWidth: 2
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top', labels: { font: { size: 11 } } }
+                    },
+                    scales: {
+                        x: { ticks: { maxRotation: 45, font: { size: 10 } } },
+                        y: { ticks: { font: { size: 10 } } }
+                    }
+                }
+            });
+
+            const cumCases = analysisData.cases.reduce((acc, val, i) => [...acc, (acc[i-1] || 0) + val], []);
+            const cumDeaths = analysisData.deaths.reduce((acc, val, i) => [...acc, (acc[i-1] || 0) + val], []);
+
+            const cumCtx = document.getElementById('cumulativeChart').getContext('2d');
+            charts.cumulative = new Chart(cumCtx, {
+                type: 'line',
+                data: {
+                    labels: analysisData.quarters,
+                    datasets: [
+                        {
+                            label: '累计病例',
+                            data: cumCases,
+                            borderColor: '#3498db',
+                            backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                            fill: true,
+                            tension: 0.3,
+                            borderWidth: 2
+                        },
+                        {
+                            label: '累计死亡',
+                            data: cumDeaths,
+                            borderColor: '#e74c3c',
+                            backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                            fill: true,
+                            tension: 0.3,
+                            borderWidth: 2
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top', labels: { font: { size: 11 } } }
+                    },
+                    scales: {
+                        x: { ticks: { maxRotation: 45, font: { size: 10 } } },
+                        y: { ticks: { font: { size: 10 } } }
+                    }
+                }
+            });
+        }
+
+        function initVaccinationCharts() {
+            const totalPop = 73732000;
+            const vaxRate = analysisData.vaccinations.map((v, i, arr) => 
+                arr.slice(0, i+1).reduce((a, b) => a + b, 0) / totalPop * 100);
+
+            const vaxCtx = document.getElementById('vaxCasesChart').getContext('2d');
+            charts.vaxCases = new Chart(vaxCtx, {
+                type: 'line',
+                data: {
+                    labels: analysisData.quarters,
+                    datasets: [
+                        {
+                            label: '接种率 (%)',
+                            data: vaxRate,
+                            borderColor: '#27ae60',
+                            backgroundColor: 'rgba(39, 174, 96, 0.1)',
+                            fill: true,
+                            tension: 0.3,
+                            borderWidth: 2,
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: '新增病例(万)',
+                            data: analysisData.cases.map(v => v / 10000),
+                            borderColor: '#e74c3c',
+                            backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                            fill: true,
+                            tension: 0.3,
+                            borderWidth: 2,
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top', labels: { font: { size: 11 } } }
+                    },
+                    scales: {
+                        x: { ticks: { maxRotation: 45, font: { size: 10 } } },
+                        y: { 
+                            min: 0, max: 100, 
+                            title: { display: true, text: '接种率 (%)', font: { size: 11 } },
+                            ticks: { font: { size: 10 } }
+                        },
+                        y1: { 
+                            position: 'right', 
+                            title: { display: true, text: '新增病例(万)', font: { size: 11 } },
+                            ticks: { font: { size: 10 } },
+                            grid: { drawOnChartArea: false }
+                        }
+                    }
+                }
+            });
+
+            const trendCtx = document.getElementById('vaxTrendChart').getContext('2d');
+            charts.vaxTrend = new Chart(trendCtx, {
+                type: 'bar',
+                data: {
+                    labels: analysisData.quarters,
+                    datasets: [{
+                        label: '季度接种量',
+                        data: analysisData.vaccinations,
+                        backgroundColor: '#27ae60'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        x: { ticks: { maxRotation: 45, font: { size: 10 } } },
+                        y: { ticks: { font: { size: 10 } } }
+                    }
+                }
+            });
+        }
+
+        function initHealthcareCharts() {
+            const hcCtx = document.getElementById('healthcareChart').getContext('2d');
+            charts.healthcare = new Chart(hcCtx, {
+                type: 'line',
+                data: {
+                    labels: analysisData.healthcare.years,
+                    datasets: [
+                        {
+                            label: 'PKRC',
+                            data: analysisData.healthcare.pkrc,
+                            borderColor: '#2c3e50',
+                            backgroundColor: 'rgba(44, 62, 80, 0.3)',
+                            fill: true,
+                            tension: 0.3,
+                            borderWidth: 2
+                        },
+                        {
+                            label: '医院',
+                            data: analysisData.healthcare.hospital,
+                            borderColor: '#3498db',
+                            backgroundColor: 'rgba(52, 152, 219, 0.3)',
+                            fill: true,
+                            tension: 0.3,
+                            borderWidth: 2
+                        },
+                        {
+                            label: 'ICU',
+                            data: analysisData.healthcare.icu,
+                            borderColor: '#e74c3c',
+                            backgroundColor: 'rgba(231, 76, 60, 0.3)',
+                            fill: true,
+                            tension: 0.3,
+                            borderWidth: 2
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top', labels: { font: { size: 11 } } }
+                    },
+                    scales: {
+                        y: { stacked: true, ticks: { font: { size: 10 } } },
+                        x: { ticks: { font: { size: 10 } } }
+                    }
+                }
+            });
+
+            const barCtx = document.getElementById('healthcareBarChart').getContext('2d');
+            charts.healthcareBar = new Chart(barCtx, {
+                type: 'bar',
+                data: {
+                    labels: analysisData.states,
+                    datasets: [{
+                        label: '床位使用量',
+                        data: analysisData.stateTotals,
+                        backgroundColor: '#3498db'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        x: { ticks: { maxRotation: 45, font: { size: 10 } } },
+                        y: { ticks: { font: { size: 10 } } }
+                    }
+                }
+            });
+        }
+
+        function initAgeCharts() {
+            const barCtx = document.getElementById('ageBarChart').getContext('2d');
+            charts.ageBar = new Chart(barCtx, {
+                type: 'bar',
+                data: {
+                    labels: analysisData.ageGroups,
+                    datasets: [
+                        { label: '部分接种', data: analysisData.ageStats.partial, backgroundColor: '#95a5a6' },
+                        { label: '完全接种', data: analysisData.ageStats.full, backgroundColor: '#3498db' },
+                        { label: '加强针1', data: analysisData.ageStats.booster, backgroundColor: '#27ae60' },
+                        { label: '加强针2', data: analysisData.ageStats.booster2, backgroundColor: '#f39c12' }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top', labels: { font: { size: 11 } } }
+                    },
+                    scales: {
+                        x: { stacked: true, ticks: { font: { size: 10 } } },
+                        y: { stacked: true, ticks: { font: { size: 10 } } }
+                    }
+                }
+            });
+
+            const pieCtx = document.getElementById('agePieChart').getContext('2d');
+            charts.agePie = new Chart(pieCtx, {
+                type: 'pie',
+                data: {
+                    labels: analysisData.ageGroups,
+                    datasets: [{
+                        data: analysisData.ageTotals,
+                        backgroundColor: [
+                            '#2c3e50', '#34495e', '#3498db', '#2980b9', '#27ae60',
+                            '#16a085', '#f39c12', '#e67e22', '#e74c3c'
+                        ],
+                        borderWidth: 1,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'right', labels: { font: { size: 10 } } }
+                    }
+                }
+            });
+
+            const boosterCtx = document.getElementById('boosterChart').getContext('2d');
+            charts.booster = new Chart(boosterCtx, {
+                type: 'bar',
+                data: {
+                    labels: analysisData.ageGroups,
+                    datasets: [
+                        { label: '加强针1', data: analysisData.ageStats.booster, backgroundColor: '#27ae60' },
+                        { label: '加强针2', data: analysisData.ageStats.booster2, backgroundColor: '#f39c12' }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top', labels: { font: { size: 11 } } }
+                    },
+                    scales: {
+                        x: { stacked: true, ticks: { font: { size: 10 } } },
+                        y: { stacked: true, ticks: { font: { size: 10 } } }
+                    }
+                }
+            });
+        }
+
+        window.addEventListener('load', initAllCharts);
+    </script>
+</body>
+</html>
