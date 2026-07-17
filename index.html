@@ -27,6 +27,33 @@
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
         }
 
+        .lang-switch {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        .lang-btn {
+            padding: 6px 16px;
+            border: 1px solid #ddd;
+            background: #fff;
+            color: #333;
+            cursor: pointer;
+            font-size: 13px;
+            border-radius: 4px;
+            margin-left: 8px;
+            transition: all 0.3s;
+        }
+
+        .lang-btn:hover {
+            background: #f0f0f0;
+        }
+
+        .lang-btn.active {
+            background: #2c3e50;
+            color: #fff;
+            border-color: #2c3e50;
+        }
+
         header {
             text-align: center;
             margin-bottom: 40px;
@@ -204,91 +231,94 @@
             body { background: #fff; }
             .section { page-break-inside: avoid; }
             .chart-container { height: 250px; }
+            .lang-switch { display: none; }
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <div class="lang-switch">
+            <button class="lang-btn active" data-lang="zh">中文</button>
+            <button class="lang-btn" data-lang="en">English</button>
+        </div>
+
         <header>
-            <h1>马来西亚COVID-19流行病监测分析系统</h1>
-            <div class="subtitle">Malaysia COVID-19 Epidemic Monitoring and Analysis System</div>
-            <div class="meta">数据来源：马来西亚官方COVID-19公开数据集 | 分析周期：2021年1月 - 2025年6月</div>
+            <h1 data-i18n="title">马来西亚COVID-19流行病监测分析系统</h1>
+            <div class="subtitle" data-i18n="subtitle">Malaysia COVID-19 Epidemic Monitoring and Analysis System</div>
+            <div class="meta" data-i18n="meta">数据来源：马来西亚官方COVID-19公开数据集 | 分析周期：2021年1月 - 2025年6月</div>
         </header>
 
-        <!-- 数据概览 -->
         <div class="section">
-            <h2>一、数据概览</h2>
+            <h2 data-i18n="section1_title">一、数据概览</h2>
             <div class="stat-grid">
                 <div class="stat-card">
                     <div class="value">5,233,643</div>
-                    <div class="label">累计确诊病例</div>
+                    <div class="label" data-i18n="stat1_label">累计确诊病例</div>
                 </div>
                 <div class="stat-card">
                     <div class="value">36,880</div>
-                    <div class="label">累计死亡病例</div>
+                    <div class="label" data-i18n="stat2_label">累计死亡病例</div>
                 </div>
                 <div class="stat-card">
                     <div class="value">0.70%</div>
-                    <div class="label">病死率</div>
+                    <div class="label" data-i18n="stat3_label">病死率</div>
                 </div>
                 <div class="stat-card">
                     <div class="value">68,639,122</div>
-                    <div class="label">累计检测量</div>
+                    <div class="label" data-i18n="stat4_label">累计检测量</div>
                 </div>
                 <div class="stat-card">
                     <div class="value">72,657,712</div>
-                    <div class="label">疫苗接种总量</div>
+                    <div class="label" data-i18n="stat5_label">疫苗接种总量</div>
                 </div>
                 <div class="stat-card">
                     <div class="value">98.54%</div>
-                    <div class="label">疫苗接种率</div>
+                    <div class="label" data-i18n="stat6_label">疫苗接种率</div>
                 </div>
             </div>
             <div class="analysis-box">
-                <h4>数据分析概要</h4>
+                <h4 data-i18n="summary_title">数据分析概要</h4>
                 <ul>
-                    <li>本分析基于马来西亚官方COVID-19公开数据集，覆盖2021年1月至2025年6月共1,461天的疫情数据</li>
-                    <li>累计确诊病例5,233,643例，累计死亡36,880例，病死率维持在0.70%的较低水平</li>
-                    <li>累计检测量达68,639,122次，疫苗接种总量72,657,712剂次，接种率达98.54%</li>
-                    <li>数据表明马来西亚在疫情防控和疫苗接种方面取得显著成效，疫情态势趋于平稳</li>
+                    <li data-i18n="summary1">本分析基于马来西亚官方COVID-19公开数据集，覆盖2021年1月至2025年6月共1,461天的疫情数据</li>
+                    <li data-i18n="summary2">累计确诊病例5,233,643例，累计死亡36,880例，病死率维持在0.70%的较低水平</li>
+                    <li data-i18n="summary3">累计检测量达68,639,122次，疫苗接种总量72,657,712剂次，接种率达98.54%</li>
+                    <li data-i18n="summary4">数据表明马来西亚在疫情防控和疫苗接种方面取得显著成效，疫情态势趋于平稳</li>
                 </ul>
             </div>
         </div>
 
-        <!-- 疫情趋势分析 -->
         <div class="section">
-            <h2>二、疫情趋势分析</h2>
+            <h2 data-i18n="section2_title">二、疫情趋势分析</h2>
             <div class="chart-row">
                 <div class="chart-box">
-                    <h3>图1：COVID-19新增病例与新增死亡季度趋势（2021-2025年）</h3>
+                    <h3 data-i18n="chart1_title">图1：COVID-19新增病例与新增死亡季度趋势（2021-2025年）</h3>
                     <div class="chart-container">
                         <canvas id="trendChart"></canvas>
                     </div>
                 </div>
                 <div class="chart-box">
-                    <h3>图2：COVID-19累计病例与累计死亡趋势</h3>
+                    <h3 data-i18n="chart2_title">图2：COVID-19累计病例与累计死亡趋势</h3>
                     <div class="chart-container">
                         <canvas id="cumulativeChart"></canvas>
                     </div>
                 </div>
             </div>
             <div class="analysis-box">
-                <h4>疫情趋势分析结论</h4>
+                <h4 data-i18n="trend_conclusion">疫情趋势分析结论</h4>
                 <ul>
-                    <li>新增病例与新增死亡呈现明显的正相关关系，死亡病例峰值滞后于确诊病例峰值约1-2周</li>
-                    <li>疫情在2021年第三季度达到峰值（1,493,716例），随后逐步下降并维持在较低水平</li>
-                    <li>2022年后疫情进入平稳期，2023-2025年新增病例维持在较低水平</li>
-                    <li>累计确诊病例达523万例，累计死亡3.7万例，病死率保持在0.7%的国际较低水平</li>
+                    <li data-i18n="trend1">新增病例与新增死亡呈现明显的正相关关系，死亡病例峰值滞后于确诊病例峰值约1-2周</li>
+                    <li data-i18n="trend2">疫情在2021年第三季度达到峰值（1,493,716例），随后逐步下降并维持在较低水平</li>
+                    <li data-i18n="trend3">2022年后疫情进入平稳期，2023-2025年新增病例维持在较低水平</li>
+                    <li data-i18n="trend4">累计确诊病例达523万例，累计死亡3.7万例，病死率保持在0.7%的国际较低水平</li>
                 </ul>
             </div>
         </div>
 
-        <!-- 疫苗接种分析 -->
         <div class="section">
-            <h2>三、疫苗接种分析</h2>
+            <h2 data-i18n="section3_title">三、疫苗接种分析</h2>
             <div class="chart-row">
                 <div class="chart-box chart-full">
-                    <h3>图3：疫苗接种率与新增病例对比分析</h3>
+                    <h3 data-i18n="chart3_title">图3：疫苗接种率与新增病例对比分析</h3>
                     <div class="chart-container-large">
                         <canvas id="vaxCasesChart"></canvas>
                     </div>
@@ -296,29 +326,28 @@
             </div>
             <div class="chart-row">
                 <div class="chart-box chart-full">
-                    <h3>图4：疫苗接种季度分布趋势</h3>
+                    <h3 data-i18n="chart4_title">图4：疫苗接种季度分布趋势</h3>
                     <div class="chart-container">
                         <canvas id="vaxTrendChart"></canvas>
                     </div>
                 </div>
             </div>
             <div class="analysis-box">
-                <h4>疫苗接种分析结论</h4>
+                <h4 data-i18n="vax_conclusion">疫苗接种分析结论</h4>
                 <ul>
-                    <li>随着疫苗接种率的提高，新增病例呈现明显下降趋势，两者呈现显著负相关</li>
-                    <li>2021年第三季度为疫苗接种高峰期，接种量达3,667万剂次，随后逐步下降</li>
-                    <li>18-29岁年龄段接种量最高（1,817万剂次），80岁以上年龄段接种量最低（90万剂次）</li>
-                    <li>疫苗接种对控制疫情传播起到关键作用，接种率达到98.54%后疫情得到有效控制</li>
+                    <li data-i18n="vax1">随着疫苗接种率的提高，新增病例呈现明显下降趋势，两者呈现显著负相关</li>
+                    <li data-i18n="vax2">2021年第三季度为疫苗接种高峰期，接种量达3,667万剂次，随后逐步下降</li>
+                    <li data-i18n="vax3">18-29岁年龄段接种量最高（1,817万剂次），80岁以上年龄段接种量最低（90万剂次）</li>
+                    <li data-i18n="vax4">疫苗接种对控制疫情传播起到关键作用，接种率达到98.54%后疫情得到有效控制</li>
                 </ul>
             </div>
         </div>
 
-        <!-- 医疗系统压力 -->
         <div class="section">
-            <h2>四、医疗系统压力分析</h2>
+            <h2 data-i18n="section4_title">四、医疗系统压力分析</h2>
             <div class="chart-row">
                 <div class="chart-box chart-full">
-                    <h3>图5：年度医疗资源利用情况（2021-2025年）</h3>
+                    <h3 data-i18n="chart5_title">图5：年度医疗资源利用情况（2021-2025年）</h3>
                     <div class="chart-container-large">
                         <canvas id="healthcareChart"></canvas>
                     </div>
@@ -326,30 +355,29 @@
             </div>
             <div class="chart-row">
                 <div class="chart-box chart-full">
-                    <h3>图6：各州医疗资源使用统计（前10州）</h3>
+                    <h3 data-i18n="chart6_title">图6：各州医疗资源使用统计（前10州）</h3>
                     <div class="chart-container">
                         <canvas id="healthcareBarChart"></canvas>
                     </div>
                 </div>
             </div>
             <div class="analysis-box">
-                <h4>医疗系统压力分析结论</h4>
+                <h4 data-i18n="healthcare_conclusion">医疗系统压力分析结论</h4>
                 <ul>
-                    <li>雪兰莪州医疗资源使用量最高（174万次），其次为砂拉越州（110万次）和柔佛州（87万次）</li>
-                    <li>疫情高峰期（2021年）医疗资源压力较大，PKRC（低风险隔离中心）使用量达450万次</li>
-                    <li>医院床位使用量从2021年的218万次下降至2025年的2,741次，下降幅度达99.87%</li>
-                    <li>ICU资源在疫情峰值时压力最大（2021年26万次），2025年降至45次，缓解显著</li>
-                    <li>医疗资源利用率逐年下降，表明疫情对医疗系统的压力已基本缓解</li>
+                    <li data-i18n="healthcare1">雪兰莪州医疗资源使用量最高（174万次），其次为砂拉越州（110万次）和柔佛州（87万次）</li>
+                    <li data-i18n="healthcare2">疫情高峰期（2021年）医疗资源压力较大，PKRC（低风险隔离中心）使用量达450万次</li>
+                    <li data-i18n="healthcare3">医院床位使用量从2021年的218万次下降至2025年的2,741次，下降幅度达99.87%</li>
+                    <li data-i18n="healthcare4">ICU资源在疫情峰值时压力最大（2021年26万次），2025年降至45次，缓解显著</li>
+                    <li data-i18n="healthcare5">医疗资源利用率逐年下降，表明疫情对医疗系统的压力已基本缓解</li>
                 </ul>
             </div>
         </div>
 
-        <!-- 年龄分布分析 -->
         <div class="section">
-            <h2>五、年龄分布分析</h2>
+            <h2 data-i18n="section5_title">五、年龄分布分析</h2>
             <div class="chart-row">
                 <div class="chart-box chart-full">
-                    <h3>图7：各年龄段疫苗接种覆盖情况</h3>
+                    <h3 data-i18n="chart7_title">图7：各年龄段疫苗接种覆盖情况</h3>
                     <div class="chart-container-large">
                         <canvas id="ageBarChart"></canvas>
                     </div>
@@ -357,33 +385,33 @@
             </div>
             <div class="chart-row">
                 <div class="chart-box">
-                    <h3>图8：各年龄段接种比例分布</h3>
+                    <h3 data-i18n="chart8_title">图8：各年龄段接种比例分布</h3>
                     <div class="chart-container">
                         <canvas id="agePieChart"></canvas>
                     </div>
                 </div>
                 <div class="chart-box">
-                    <h3>图9：加强针接种年龄分布</h3>
+                    <h3 data-i18n="chart9_title">图9：加强针接种年龄分布</h3>
                     <div class="chart-container">
                         <canvas id="boosterChart"></canvas>
                     </div>
                 </div>
             </div>
             <div class="analysis-box">
-                <h4>年龄分布分析结论</h4>
+                <h4 data-i18n="age_conclusion">年龄分布分析结论</h4>
                 <ul>
-                    <li>18-29岁年龄段接种总量最高（1,817万剂次），占总接种量的25%；80岁以上最低（90万剂次），占1.2%</li>
-                    <li>完全接种率在各年龄段均保持较高水平，5-11岁儿童完全接种率为46.5%</li>
-                    <li>加强针接种在成年人中较为普遍，但在青少年群体（12-17岁）覆盖率较低（仅1.0%）</li>
-                    <li>第二剂加强针接种主要集中在50岁以上高风险人群，年轻人群体接种率较低</li>
-                    <li>建议继续推进青少年和儿童的疫苗接种工作，特别是加强针的接种覆盖率</li>
+                    <li data-i18n="age1">18-29岁年龄段接种总量最高（1,817万剂次），占总接种量的25%；80岁以上最低（90万剂次），占1.2%</li>
+                    <li data-i18n="age2">完全接种率在各年龄段均保持较高水平，5-11岁儿童完全接种率为46.5%</li>
+                    <li data-i18n="age3">加强针接种在成年人中较为普遍，但在青少年群体（12-17岁）覆盖率较低（仅1.0%）</li>
+                    <li data-i18n="age4">第二剂加强针接种主要集中在50岁以上高风险人群，年轻人群体接种率较低</li>
+                    <li data-i18n="age5">建议继续推进青少年和儿童的疫苗接种工作，特别是加强针的接种覆盖率</li>
                 </ul>
             </div>
         </div>
 
         <footer>
-            <p>马来西亚COVID-19流行病监测分析系统 V1.0 | 数据覆盖周期：2021年1月 - 2025年6月</p>
-            <p style="margin-top: 5px;">© 2025 版权所有</p>
+            <p data-i18n="footer1">马来西亚COVID-19流行病监测分析系统 V1.0 | 数据覆盖周期：2021年1月 - 2025年6月</p>
+            <p style="margin-top: 5px;" data-i18n="footer2">© 2025 版权所有</p>
         </footer>
     </div>
 
@@ -415,7 +443,219 @@
             }
         };
 
+        const translations = {
+            zh: {
+                title: '马来西亚COVID-19流行病监测分析系统',
+                subtitle: 'Malaysia COVID-19 Epidemic Monitoring and Analysis System',
+                meta: '数据来源：马来西亚官方COVID-19公开数据集 | 分析周期：2021年1月 - 2025年6月',
+                section1_title: '一、数据概览',
+                stat1_label: '累计确诊病例',
+                stat2_label: '累计死亡病例',
+                stat3_label: '病死率',
+                stat4_label: '累计检测量',
+                stat5_label: '疫苗接种总量',
+                stat6_label: '疫苗接种率',
+                summary_title: '数据分析概要',
+                summary1: '本分析基于马来西亚官方COVID-19公开数据集，覆盖2021年1月至2025年6月共1,461天的疫情数据',
+                summary2: '累计确诊病例5,233,643例，累计死亡36,880例，病死率维持在0.70%的较低水平',
+                summary3: '累计检测量达68,639,122次，疫苗接种总量72,657,712剂次，接种率达98.54%',
+                summary4: '数据表明马来西亚在疫情防控和疫苗接种方面取得显著成效，疫情态势趋于平稳',
+                section2_title: '二、疫情趋势分析',
+                chart1_title: '图1：COVID-19新增病例与新增死亡季度趋势（2021-2025年）',
+                chart2_title: '图2：COVID-19累计病例与累计死亡趋势',
+                trend_conclusion: '疫情趋势分析结论',
+                trend1: '新增病例与新增死亡呈现明显的正相关关系，死亡病例峰值滞后于确诊病例峰值约1-2周',
+                trend2: '疫情在2021年第三季度达到峰值（1,493,716例），随后逐步下降并维持在较低水平',
+                trend3: '2022年后疫情进入平稳期，2023-2025年新增病例维持在较低水平',
+                trend4: '累计确诊病例达523万例，累计死亡3.7万例，病死率保持在0.7%的国际较低水平',
+                section3_title: '三、疫苗接种分析',
+                chart3_title: '图3：疫苗接种率与新增病例对比分析',
+                chart4_title: '图4：疫苗接种季度分布趋势',
+                vax_conclusion: '疫苗接种分析结论',
+                vax1: '随着疫苗接种率的提高，新增病例呈现明显下降趋势，两者呈现显著负相关',
+                vax2: '2021年第三季度为疫苗接种高峰期，接种量达3,667万剂次，随后逐步下降',
+                vax3: '18-29岁年龄段接种量最高（1,817万剂次），80岁以上年龄段接种量最低（90万剂次）',
+                vax4: '疫苗接种对控制疫情传播起到关键作用，接种率达到98.54%后疫情得到有效控制',
+                section4_title: '四、医疗系统压力分析',
+                chart5_title: '图5：年度医疗资源利用情况（2021-2025年）',
+                chart6_title: '图6：各州医疗资源使用统计（前10州）',
+                healthcare_conclusion: '医疗系统压力分析结论',
+                healthcare1: '雪兰莪州医疗资源使用量最高（174万次），其次为砂拉越州（110万次）和柔佛州（87万次）',
+                healthcare2: '疫情高峰期（2021年）医疗资源压力较大，PKRC（低风险隔离中心）使用量达450万次',
+                healthcare3: '医院床位使用量从2021年的218万次下降至2025年的2,741次，下降幅度达99.87%',
+                healthcare4: 'ICU资源在疫情峰值时压力最大（2021年26万次），2025年降至45次，缓解显著',
+                healthcare5: '医疗资源利用率逐年下降，表明疫情对医疗系统的压力已基本缓解',
+                section5_title: '五、年龄分布分析',
+                chart7_title: '图7：各年龄段疫苗接种覆盖情况',
+                chart8_title: '图8：各年龄段接种比例分布',
+                chart9_title: '图9：加强针接种年龄分布',
+                age_conclusion: '年龄分布分析结论',
+                age1: '18-29岁年龄段接种总量最高（1,817万剂次），占总接种量的25%；80岁以上最低（90万剂次），占1.2%',
+                age2: '完全接种率在各年龄段均保持较高水平，5-11岁儿童完全接种率为46.5%',
+                age3: '加强针接种在成年人中较为普遍，但在青少年群体（12-17岁）覆盖率较低（仅1.0%）',
+                age4: '第二剂加强针接种主要集中在50岁以上高风险人群，年轻人群体接种率较低',
+                age5: '建议继续推进青少年和儿童的疫苗接种工作，特别是加强针的接种覆盖率',
+                footer1: '马来西亚COVID-19流行病监测分析系统 V1.0 | 数据覆盖周期：2021年1月 - 2025年6月',
+                footer2: '© 2025 版权所有',
+                new_cases: '新增病例',
+                new_deaths: '新增死亡',
+                cum_cases: '累计病例',
+                cum_deaths: '累计死亡',
+                vax_rate: '接种率 (%)',
+                new_cases_wan: '新增病例(万)',
+                quarterly_vax: '季度接种量',
+                pkrc: 'PKRC',
+                hospital: '医院',
+                icu: 'ICU',
+                bed_usage: '床位使用量',
+                partial: '部分接种',
+                full: '完全接种',
+                booster1: '加强针1',
+                booster2: '加强针2',
+                vax_rate_y: '接种率 (%)',
+                new_cases_y1: '新增病例(万)'
+            },
+            en: {
+                title: 'Malaysia COVID-19 Epidemic Monitoring and Analysis System',
+                subtitle: '马来西亚COVID-19流行病监测分析系统',
+                meta: 'Data Source: Malaysia Official COVID-19 Public Dataset | Analysis Period: January 2021 - June 2025',
+                section1_title: 'I. Data Overview',
+                stat1_label: 'Total Confirmed Cases',
+                stat2_label: 'Total Deaths',
+                stat3_label: 'Case Fatality Rate',
+                stat4_label: 'Total Tests',
+                stat5_label: 'Total Vaccinations',
+                stat6_label: 'Vaccination Rate',
+                summary_title: 'Data Analysis Summary',
+                summary1: 'This analysis is based on Malaysia official COVID-19 public dataset, covering 1,461 days of epidemic data from January 2021 to June 2025',
+                summary2: 'Total confirmed cases: 5,233,643, total deaths: 36,880, case fatality rate maintained at a low level of 0.70%',
+                summary3: 'Total tests: 68,639,122, total vaccinations: 72,657,712 doses, vaccination rate reached 98.54%',
+                summary4: 'Data shows that Malaysia has achieved significant results in epidemic prevention and vaccination, and the epidemic situation tends to be stable',
+                section2_title: 'II. Epidemic Trend Analysis',
+                chart1_title: 'Figure 1: Quarterly Trend of COVID-19 New Cases and Deaths (2021-2025)',
+                chart2_title: 'Figure 2: Cumulative Cases and Deaths Trend',
+                trend_conclusion: 'Epidemic Trend Analysis Conclusions',
+                trend1: 'New cases and new deaths show a significant positive correlation, with death peak lagging behind confirmed cases peak by about 1-2 weeks',
+                trend2: 'The epidemic reached its peak in Q3 2021 (1,493,716 cases), then gradually declined and remained at a low level',
+                trend3: 'After 2022, the epidemic entered a stable period, with new cases maintaining at a low level from 2023 to 2025',
+                trend4: 'Total confirmed cases reached 5.23 million, total deaths 37,000, with case fatality rate remaining at 0.7%, which is internationally low',
+                section3_title: 'III. Vaccination Analysis',
+                chart3_title: 'Figure 3: Comparison of Vaccination Rate and New Cases',
+                chart4_title: 'Figure 4: Quarterly Vaccination Distribution Trend',
+                vax_conclusion: 'Vaccination Analysis Conclusions',
+                vax1: 'With the increase of vaccination rate, new cases show a significant downward trend, showing a significant negative correlation',
+                vax2: 'Q3 2021 was the peak period for vaccination, with 36.67 million doses administered, then gradually declined',
+                vax3: 'The 18-29 age group had the highest vaccination volume (18.17 million doses), while the over-80 age group had the lowest (900,000 doses)',
+                vax4: 'Vaccination played a key role in controlling the epidemic spread, and the epidemic was effectively controlled after vaccination rate reached 98.54%',
+                section4_title: 'IV. Healthcare System Pressure Analysis',
+                chart5_title: 'Figure 5: Annual Healthcare Resource Utilization (2021-2025)',
+                chart6_title: 'Figure 6: Healthcare Resource Usage by State (Top 10)',
+                healthcare_conclusion: 'Healthcare System Pressure Analysis Conclusions',
+                healthcare1: 'Selangor had the highest healthcare resource usage (1.74 million), followed by Sarawak (1.10 million) and Johor (870,000)',
+                healthcare2: 'During the epidemic peak (2021), healthcare resource pressure was high, with PKRC (Low Risk Isolation Center) usage reaching 4.5 million',
+                healthcare3: 'Hospital bed usage decreased from 2.18 million in 2021 to 2,741 in 2025, a decrease of 99.87%',
+                healthcare4: 'ICU resources were under the greatest pressure during the epidemic peak (260,000 in 2021), dropping to 45 in 2025, showing significant relief',
+                healthcare5: 'Healthcare resource utilization rate decreased year by year, indicating that the pressure on the healthcare system has basically eased',
+                section5_title: 'V. Age Distribution Analysis',
+                chart7_title: 'Figure 7: Vaccination Coverage by Age Group',
+                chart8_title: 'Figure 8: Vaccination Proportion by Age Group',
+                chart9_title: 'Figure 9: Booster Vaccination Age Distribution',
+                age_conclusion: 'Age Distribution Analysis Conclusions',
+                age1: 'The 18-29 age group had the highest total vaccination (18.17 million doses), accounting for 25% of total; over-80 age group had the lowest (900,000 doses), accounting for 1.2%',
+                age2: 'Full vaccination rate remained high across all age groups, with 46.5% for children aged 5-11',
+                age3: 'Booster vaccination was common among adults, but coverage was low among adolescents (12-17 years old) at only 1.0%',
+                age4: 'Second booster doses were mainly concentrated in high-risk groups over 50 years old, with low vaccination rates among young people',
+                age5: 'It is recommended to continue promoting vaccination among adolescents and children, especially booster coverage',
+                footer1: 'Malaysia COVID-19 Epidemic Monitoring and Analysis System V1.0 | Data Coverage: January 2021 - June 2025',
+                footer2: '© 2025 All Rights Reserved',
+                new_cases: 'New Cases',
+                new_deaths: 'New Deaths',
+                cum_cases: 'Cumulative Cases',
+                cum_deaths: 'Cumulative Deaths',
+                vax_rate: 'Vaccination Rate (%)',
+                new_cases_wan: 'New Cases (10k)',
+                quarterly_vax: 'Quarterly Vaccinations',
+                pkrc: 'PKRC',
+                hospital: 'Hospital',
+                icu: 'ICU',
+                bed_usage: 'Bed Usage',
+                partial: 'Partial',
+                full: 'Full',
+                booster1: 'Booster 1',
+                booster2: 'Booster 2',
+                vax_rate_y: 'Vaccination Rate (%)',
+                new_cases_y1: 'New Cases (10k)'
+            }
+        };
+
         const charts = {};
+        let currentLang = 'zh';
+
+        function translatePage(lang) {
+            currentLang = lang;
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang][key]) {
+                    el.textContent = translations[lang][key];
+                }
+            });
+            updateChartLabels();
+        }
+
+        function updateChartLabels() {
+            const t = translations[currentLang];
+            
+            if (charts.trend) {
+                charts.trend.data.datasets[0].label = t.new_cases;
+                charts.trend.data.datasets[1].label = t.new_deaths;
+                charts.trend.update();
+            }
+            
+            if (charts.cumulative) {
+                charts.cumulative.data.datasets[0].label = t.cum_cases;
+                charts.cumulative.data.datasets[1].label = t.cum_deaths;
+                charts.cumulative.update();
+            }
+            
+            if (charts.vaxCases) {
+                charts.vaxCases.data.datasets[0].label = t.vax_rate;
+                charts.vaxCases.data.datasets[1].label = t.new_cases_wan;
+                charts.vaxCases.options.scales.y.title.text = t.vax_rate_y;
+                charts.vaxCases.options.scales.y1.title.text = t.new_cases_y1;
+                charts.vaxCases.update();
+            }
+            
+            if (charts.vaxTrend) {
+                charts.vaxTrend.data.datasets[0].label = t.quarterly_vax;
+                charts.vaxTrend.update();
+            }
+            
+            if (charts.healthcare) {
+                charts.healthcare.data.datasets[0].label = t.pkrc;
+                charts.healthcare.data.datasets[1].label = t.hospital;
+                charts.healthcare.data.datasets[2].label = t.icu;
+                charts.healthcare.update();
+            }
+            
+            if (charts.healthcareBar) {
+                charts.healthcareBar.data.datasets[0].label = t.bed_usage;
+                charts.healthcareBar.update();
+            }
+            
+            if (charts.ageBar) {
+                charts.ageBar.data.datasets[0].label = t.partial;
+                charts.ageBar.data.datasets[1].label = t.full;
+                charts.ageBar.data.datasets[2].label = t.booster1;
+                charts.ageBar.data.datasets[3].label = t.booster2;
+                charts.ageBar.update();
+            }
+            
+            if (charts.booster) {
+                charts.booster.data.datasets[0].label = t.booster1;
+                charts.booster.data.datasets[1].label = t.booster2;
+                charts.booster.update();
+            }
+        }
 
         function initAllCharts() {
             initTrendCharts();
@@ -425,6 +665,7 @@
         }
 
         function initTrendCharts() {
+            const t = translations[currentLang];
             const trendCtx = document.getElementById('trendChart').getContext('2d');
             charts.trend = new Chart(trendCtx, {
                 type: 'line',
@@ -432,7 +673,7 @@
                     labels: analysisData.quarters,
                     datasets: [
                         {
-                            label: '新增病例',
+                            label: t.new_cases,
                             data: analysisData.cases,
                             borderColor: '#2c3e50',
                             backgroundColor: 'rgba(44, 62, 80, 0.1)',
@@ -441,7 +682,7 @@
                             borderWidth: 2
                         },
                         {
-                            label: '新增死亡',
+                            label: t.new_deaths,
                             data: analysisData.deaths,
                             borderColor: '#e74c3c',
                             backgroundColor: 'rgba(231, 76, 60, 0.1)',
@@ -474,7 +715,7 @@
                     labels: analysisData.quarters,
                     datasets: [
                         {
-                            label: '累计病例',
+                            label: t.cum_cases,
                             data: cumCases,
                             borderColor: '#3498db',
                             backgroundColor: 'rgba(52, 152, 219, 0.1)',
@@ -483,7 +724,7 @@
                             borderWidth: 2
                         },
                         {
-                            label: '累计死亡',
+                            label: t.cum_deaths,
                             data: cumDeaths,
                             borderColor: '#e74c3c',
                             backgroundColor: 'rgba(231, 76, 60, 0.1)',
@@ -508,6 +749,7 @@
         }
 
         function initVaccinationCharts() {
+            const t = translations[currentLang];
             const totalPop = 73732000;
             const vaxRate = analysisData.vaccinations.map((v, i, arr) => 
                 arr.slice(0, i+1).reduce((a, b) => a + b, 0) / totalPop * 100);
@@ -519,7 +761,7 @@
                     labels: analysisData.quarters,
                     datasets: [
                         {
-                            label: '接种率 (%)',
+                            label: t.vax_rate,
                             data: vaxRate,
                             borderColor: '#27ae60',
                             backgroundColor: 'rgba(39, 174, 96, 0.1)',
@@ -529,7 +771,7 @@
                             yAxisID: 'y'
                         },
                         {
-                            label: '新增病例(万)',
+                            label: t.new_cases_wan,
                             data: analysisData.cases.map(v => v / 10000),
                             borderColor: '#e74c3c',
                             backgroundColor: 'rgba(231, 76, 60, 0.1)',
@@ -550,12 +792,12 @@
                         x: { ticks: { maxRotation: 45, font: { size: 10 } } },
                         y: { 
                             min: 0, max: 100, 
-                            title: { display: true, text: '接种率 (%)', font: { size: 11 } },
+                            title: { display: true, text: t.vax_rate_y, font: { size: 11 } },
                             ticks: { font: { size: 10 } }
                         },
                         y1: { 
                             position: 'right', 
-                            title: { display: true, text: '新增病例(万)', font: { size: 11 } },
+                            title: { display: true, text: t.new_cases_y1, font: { size: 11 } },
                             ticks: { font: { size: 10 } },
                             grid: { drawOnChartArea: false }
                         }
@@ -569,7 +811,7 @@
                 data: {
                     labels: analysisData.quarters,
                     datasets: [{
-                        label: '季度接种量',
+                        label: t.quarterly_vax,
                         data: analysisData.vaccinations,
                         backgroundColor: '#27ae60'
                     }]
@@ -589,6 +831,7 @@
         }
 
         function initHealthcareCharts() {
+            const t = translations[currentLang];
             const hcCtx = document.getElementById('healthcareChart').getContext('2d');
             charts.healthcare = new Chart(hcCtx, {
                 type: 'line',
@@ -596,7 +839,7 @@
                     labels: analysisData.healthcare.years,
                     datasets: [
                         {
-                            label: 'PKRC',
+                            label: t.pkrc,
                             data: analysisData.healthcare.pkrc,
                             borderColor: '#2c3e50',
                             backgroundColor: 'rgba(44, 62, 80, 0.3)',
@@ -605,7 +848,7 @@
                             borderWidth: 2
                         },
                         {
-                            label: '医院',
+                            label: t.hospital,
                             data: analysisData.healthcare.hospital,
                             borderColor: '#3498db',
                             backgroundColor: 'rgba(52, 152, 219, 0.3)',
@@ -614,7 +857,7 @@
                             borderWidth: 2
                         },
                         {
-                            label: 'ICU',
+                            label: t.icu,
                             data: analysisData.healthcare.icu,
                             borderColor: '#e74c3c',
                             backgroundColor: 'rgba(231, 76, 60, 0.3)',
@@ -643,7 +886,7 @@
                 data: {
                     labels: analysisData.states,
                     datasets: [{
-                        label: '床位使用量',
+                        label: t.bed_usage,
                         data: analysisData.stateTotals,
                         backgroundColor: '#3498db'
                     }]
@@ -663,16 +906,17 @@
         }
 
         function initAgeCharts() {
+            const t = translations[currentLang];
             const barCtx = document.getElementById('ageBarChart').getContext('2d');
             charts.ageBar = new Chart(barCtx, {
                 type: 'bar',
                 data: {
                     labels: analysisData.ageGroups,
                     datasets: [
-                        { label: '部分接种', data: analysisData.ageStats.partial, backgroundColor: '#95a5a6' },
-                        { label: '完全接种', data: analysisData.ageStats.full, backgroundColor: '#3498db' },
-                        { label: '加强针1', data: analysisData.ageStats.booster, backgroundColor: '#27ae60' },
-                        { label: '加强针2', data: analysisData.ageStats.booster2, backgroundColor: '#f39c12' }
+                        { label: t.partial, data: analysisData.ageStats.partial, backgroundColor: '#95a5a6' },
+                        { label: t.full, data: analysisData.ageStats.full, backgroundColor: '#3498db' },
+                        { label: t.booster1, data: analysisData.ageStats.booster, backgroundColor: '#27ae60' },
+                        { label: t.booster2, data: analysisData.ageStats.booster2, backgroundColor: '#f39c12' }
                     ]
                 },
                 options: {
@@ -718,8 +962,8 @@
                 data: {
                     labels: analysisData.ageGroups,
                     datasets: [
-                        { label: '加强针1', data: analysisData.ageStats.booster, backgroundColor: '#27ae60' },
-                        { label: '加强针2', data: analysisData.ageStats.booster2, backgroundColor: '#f39c12' }
+                        { label: t.booster1, data: analysisData.ageStats.booster, backgroundColor: '#27ae60' },
+                        { label: t.booster2, data: analysisData.ageStats.booster2, backgroundColor: '#f39c12' }
                     ]
                 },
                 options: {
@@ -736,7 +980,17 @@
             });
         }
 
-        window.addEventListener('load', initAllCharts);
+        window.addEventListener('load', () => {
+            initAllCharts();
+            
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    translatePage(e.target.dataset.lang);
+                });
+            });
+        });
     </script>
 </body>
 </html>
